@@ -1,0 +1,88 @@
+/*Estilos del body*/
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: black;
+}
+/*Estilos del Home*/
+.home {
+  
+  width: 600px;
+  height: 600px;
+  background-color: #eaeaea;
+  text-align: center;
+  position: relative; /* Para posicionar los botones en la parte inferior */
+}
+/*Estilos del Titulo*/
+.title-box {
+  background-color: red;
+  color: white;
+  padding: 20px;
+ 
+  margin-top: 20px;
+  font-size: 20px;
+}
+/*Estilos del Boton*/
+.button-container {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.btn-Aprobar {
+  background-color: #6aec86;
+  color: #000000;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-Aprobar:hover {
+  background-color: #00631a; /* Verde más oscuro */
+  color: #ffffff; /* Letras blancas */
+}
+
+.btn-Rechazar {
+  background-color: #ff9999;
+  color: #000000;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-Rechazar:hover {
+  background-color: #c50000; /* Rojo más oscuro */
+  color: #ffffff; /* Letras blancas */
+}
+
+.ticket {
+  position: relative;
+  width: 80%;
+  height: 30%;
+  background-color: #eaeaea;
+  border-bottom: 2px solid #000000;
+  justify-content: center;
+  align-items: center;
+}
+
+.Actividad {
+  position: relative;
+  width: 80%;
+  height: 30%;
+  background-color: #eaeaea;
+  border-bottom: 2px solid #000000;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+
+
+
+
