@@ -129,3 +129,6 @@ function Actividad() {
     </div>
   );
 }
+
+
+export default Actividad;
