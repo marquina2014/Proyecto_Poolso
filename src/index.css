@@ -1,4 +1,6 @@
-
+:root{
+  --main-color: #d8120c;
+}
 
 .approval-container {
   width: 100%;
@@ -12,14 +14,17 @@
 }
 
 .header {
-  background-color: #ff4b2b;
+  background-color: var(--main-color);
   color: white;
-  padding: 10px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
 .Titulo {
-  font-size: 35px !important;
+  font-size: 30px !important;
 }
 
 .approval-box {
@@ -47,17 +52,23 @@
   display: flex;
   justify-content: center;
   gap: 20px; /* Ajuste para mantener separación en pantallas pequeñas */
-  margin-top: -10px;
-  padding: 10px;
+  flex-grow: 10;
 }
 
 .btn {
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
   border: none;
-  border-radius: 30px;
+  border-radius: 40px;
   cursor: pointer;
+  width: 200px;
   transition: all 0.3s ease;
+}
+
+.btnAproval{
+  width: 200px;
+  height: 50px;
+
 }
 
 .btn-danger {
@@ -121,8 +132,22 @@ textarea.form-control {
   }
 }
 
+.column{
+  font-size: 18px;
+}
 
+.inputLabel{
+  font-weight: bold;
+}
+.inputValue{
+  padding: 3px;
+  background: #eaeaea;
+}
 
+.btnModalContainer{
+  display: flex;
+  justify-content: center;
+}
 
 
 
