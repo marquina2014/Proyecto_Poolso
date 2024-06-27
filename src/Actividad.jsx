@@ -22,14 +22,12 @@ function Actividad() {
   };
 
   const handleApprove = () => {
-    // Lógica para aprobar
     console.log('Aprobado con observaciones:', observaciones);
     setObservaciones('');
     handleClose();
   };
 
   const handleReject = () => {
-    // Lógica para rechazar
     if (observaciones.trim() === '') {
       setError('Las observaciones son obligatorias para rechazar.');
       return;
@@ -48,35 +46,47 @@ function Actividad() {
         <div className="section">
           <h3 className="TicAT-Titulo">Información Ticket</h3>
           <div className="section-content">
-            <div>ID: 33</div>
-            <div>Cliente: BHP</div>
-            <div>Fecha Soporte: 26/06/2024 10:40</div>
-            <div>Horas Totales: 25</div>
-            <div>Creado Por: Gabriel Rondón Barrios</div>
-            <div>Observaciones Generales: asd</div>
-            <div>Dashboard: Control de Horas</div>
-            <div>Adjuntos: Sin Archivos Cargados</div>
+            <div className="row">
+              <div className="column">
+                <div>ID: 33</div>
+                <div>Fecha Soporte: 26/06/2024 10:40</div>
+                <div>Creado Por: Gabriel Rondón Barrios</div>
+                <div>Dashboard: Control de Horas</div>
+              </div>
+              <div className="column">
+                <div>Cliente: BHP</div>
+                <div>Horas Totales: 25</div>
+                <div>Observaciones Generales: asd</div>
+                <div>Adjuntos: Sin Archivos Cargados</div>
+              </div>
+            </div>
           </div>
         </div>
         <div className="section">
           <h3 className="TicAT-Titulo">Actividad Realizada</h3>
           <div className="section-content">
-            <div>ID: 45</div>
-            <div>Horas Estimadas: 7</div>
-            <div>Horas Reales: 15</div>
-            <div>Asignado A: Gabriel Rondón</div>
-            <div>Solicitado Por: Gabriel Rondón Barrios</div>
-            <div>Observaciones Consultor: asd</div>
-            <div>Facturable: No</div>
-            <div>Adjuntos: Sin Archivos Cargados</div>
-            <div>Detalles: asd</div>
+            <div className="row">
+              <div className="column">
+                <div>ID: 45</div>
+                <div>Horas Reales: 15</div>
+                <div>Solicitado Por: Gabriel Rondón Barrios</div>
+                <div>Facturable: No</div>
+                <div>Detalles: asd</div>
+              </div>
+              <div className="column">
+                <div>Horas Estimadas: 7</div>
+                <div>Asignado A: Gabriel Rondón</div>
+                <div>Observaciones Consultor: asd</div>
+                <div>Adjuntos: Sin Archivos Cargados</div>
+              </div>
+            </div>
           </div>
         </div>
         <div className="buttons">
-          <button className="btn btn-danger btn-large" onClick={() => handleShow('Rechazar Actividad')}>
+          <button className="btn btn-danger btn-lg mr-2" onClick={() => handleShow('Rechazar Actividad')}>
             Rechazar
           </button>
-          <button className="btn btn-success btn-large" onClick={() => handleShow('Aprobar Actividad')}>
+          <button className="btn btn-success btn-lg" onClick={() => handleShow('Aprobar Actividad')}>
             Aprobar
           </button>
         </div>
@@ -94,6 +104,7 @@ function Actividad() {
                 value={observaciones}
                 onChange={(e) => setObservaciones(e.target.value)}
                 className="form-control"
+                style={{ resize: 'none' }}
               ></textarea>
               {error && <p style={{ color: 'red' }}>{error}</p>}
             </div>
@@ -101,16 +112,16 @@ function Actividad() {
           <Modal.Footer>
             {modalTitle === 'Rechazar Actividad' && (
               <Button variant="danger" onClick={handleReject}>
-                  Rechazar
+                Rechazar
               </Button>
             )}
-            {modalTitle === 'Aprobar Actividad' && (
+             {modalTitle === 'Aprobar Actividad' && (
               <Button variant="success" onClick={handleApprove}>
                 Aprobar
               </Button>
             )}
             <Button variant="secondary" onClick={handleClose}>
-              Cancelar
+              Cerrar
             </Button>
           </Modal.Footer>
         </motion.div>
@@ -118,5 +129,3 @@ function Actividad() {
     </div>
   );
 }
-
-export default Actividad;
