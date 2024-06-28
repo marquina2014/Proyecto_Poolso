@@ -68,25 +68,25 @@
 .btnAproval{
   width: 200px;
   height: 50px;
-
 }
 
 .btn-danger {
-  background-color: #ff4b2b;
+  background-color: var(--main-color) !important;
   color: white;
 }
 
 .btn-danger:hover {
-  background-color: #e43e26;
+  background-color: #7a0000 !important;
 }
 
 .btn-success {
-  background-color: #28a745;
-  color: white;
+  background-color: #00aa28 !important;
+  color: rgb(255, 255, 255) !important;
 }
 
 .btn-success:hover {
-  background-color: #218838;
+  background-color: #006315 !important;
+  color: rgb(255, 255, 255) !important;
 }
 
 .btn-large {
@@ -147,6 +147,18 @@ textarea.form-control {
 .btnModalContainer{
   display: flex;
   justify-content: center;
+}
+
+
+.btn-cerrar {
+  background-color: #666666 !important;
+  color: white !important;
+}
+
+
+.btn-cerrar:hover {
+  background-color: #272727 !important;
+  color:white !important;
 }
 
 
