@@ -1,0 +1,26 @@
+.imageContainer{
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: white;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: ease 1s;
+}
+
+.image{
+    width: 300px;
+    
+}
+
+.imageTextContainer{
+    font-weight: bold;
+    color: var(--main-color);
+    display: flex;
+    justify-content: center;
+    
+}

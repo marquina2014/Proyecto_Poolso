@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Modal } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import './index.css';
+
+import logo from './assets/Poolsorojo.png'
+import Loader from './Components/Loader/Loader';
+import SinAcceso from './Components/SinAcceso/SinAcceso';
 
 function Actividad() {
   const [modalShow, setModalShow] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [observaciones, setObservaciones] = useState('');
   const [error, setError] = useState('');
+
+  const [dloader, setDloader] = useState(true)
 
   const handleClose = () => {
     setModalShow(false);
@@ -108,10 +114,17 @@ function Actividad() {
     
   ]
 
+  useEffect(()=>{
+    setTimeout(()=>{
+      setDloader(false)
+    }, 3000)
+  })
+
   return (
     <div className="approval-container">
       <div className="header">
-        <h2 className="Titulo">APROBAR ACTIVIDADES CLIENTE</h2>
+        <h2 className="Titulo">Soporte Poolso</h2>
+        <img className='logo' src={logo} alt="" />
       </div>
       <div className="approval-box">
         <div className="section">
@@ -196,6 +209,13 @@ function Actividad() {
           </Modal.Footer>
         </motion.div>
       </Modal>
+      
+      {/* Loader */}
+      {
+        dloader?
+        <Loader />:
+        <></>
+      }
     </div>
   );
 }
