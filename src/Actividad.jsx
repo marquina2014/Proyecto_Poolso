@@ -3,15 +3,22 @@ import { Modal } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import './index.css';
 
+
 import logo from './assets/Poolsorojo.png'
 import Loader from './Components/Loader/Loader';
-import SinAcceso from './Components/SinAcceso/SinAcceso';
+import { useNavigate } from 'react-router-dom';
+
 
 function Actividad() {
   const [modalShow, setModalShow] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [observaciones, setObservaciones] = useState('');
   const [error, setError] = useState('');
+  const [ticket, setTicket] = useState([])
+  const [actividad, setActividad] = useState([])
+  const [aid, setAid] = useState(null)
+
+  const navigate = useNavigate();
 
   const [dloader, setDloader] = useState(true)
 
@@ -31,6 +38,7 @@ function Actividad() {
     console.log('Aprobado con observaciones:', observaciones);
     setObservaciones('');
     handleClose();
+    aprobar()
   };
 
   const handleReject = () => {
@@ -41,84 +49,112 @@ function Actividad() {
     console.log('Rechazado con observaciones:', observaciones);
     setObservaciones('');
     handleClose();
+    rechazar()
   };
 
-  const ticket = [
-    {
-      title: 'ID',
-      value: '33'
-    },
-    {
-      title: 'Fecha Soporte',
-      value: '26/06/2024 10:40'
-    },
-    {
-      title: 'Creado Por',
-      value: 'Gabriel Rondón Barrios'
-    },
-    {
-      title: 'Dashboard',
-      value: 'Control de Horas'
-    },
-    {
-      title: 'Cliente',
-      value: 'BHP'
-    },
-    {
-      title: 'Horas Totales',
-      value: '25'
-    },
-    {
-      title: 'Observaciones Generales',
-      value: 'asd'
-    },
-    {
-      title: 'Adjuntos',
-      value: 'Sin Archivos Cargados'
-    }
-  ]
-  const Actividad = [
-    
-    {
-      title: 'ID',
-      value: '33'
-    },
-    {
-      title: 'Horas Reales',
-      value: '15'
-    },
-    {
-      title: 'Solicitado Por',
-      value: 'Gabriel Rondón Barrios'
-    },
-    {
-      title: 'Facturable',
-      value: 'No'
-    },
-    {
-      title: 'Detalles',
-      value: 'asd'
-    },
-    {
-      title: 'Horas Estimadas',
-      value: '7'
-    },
-    {
-      title: 'Asignado A',
-      value: 'Gabriel Rondón'
-    },
-    {
-      title: 'Observaciones Consultor',
-      value: 'asd'
-    }
-    
-  ]
-
   useEffect(()=>{
-    setTimeout(()=>{
+    const params = new URLSearchParams(document.location.search)
+    const getAID = params.get('aid')
+    setAid(getAID)
+
+    if(!getAID){
+      navigate('SinAcceso')
+    }
+
+    fetch(
+      "https://prod2-08.brazilsouth.logic.azure.com:443/workflows/2b574b1aaa414db19f733f218d1a9560/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eDolAiazNNPeOvUFFbPmPTCE2LWX8W0MDCtAv3SaSbk",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          method: "post",
+          controller: "Validate",
+          data: `{aid: '${getAID}'}`
+        })
+      }
+    ).then(response=>{
+      if(response.status == 200){
+        response.json().then(data=>{
+
+          const valuesTicket = []
+          const valuesActividad = []
+          Object.keys(data.Ticket).forEach(item=>{
+            valuesTicket.push({
+              title: item.split("_").join(" "),
+              value: data.Ticket[item]
+            })
+          })
+          Object.keys(data.Actividad).forEach(item=>{
+            valuesActividad.push({
+              title: item.split("_").join(" "),
+              value: data.Actividad[item]
+            })
+          })
+  
+          setTicket(valuesTicket)
+          setActividad(valuesActividad)
+  
+          setDloader(false)
+        })
+      }else{
+        navigate('/SinAcceso')
+      }
+    })
+  },[])
+
+  const rechazar = () =>{
+    setDloader(true)
+
+    fetch(
+      "https://prod2-08.brazilsouth.logic.azure.com:443/workflows/2b574b1aaa414db19f733f218d1a9560/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eDolAiazNNPeOvUFFbPmPTCE2LWX8W0MDCtAv3SaSbk",
+      {
+        method:"POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          method: "post",
+          controller: "Reject",
+          data: `{aid: '${aid}', observaciones: '${observaciones}', cliente: 1}`
+        })
+      }
+    ).then(response=>{
       setDloader(false)
-    }, 3000)
-  })
+      if(response.status == 200){
+        alert("Aprobacion Realizada")
+      }else{
+        alert("error al enviar")
+      }
+    })
+  }
+
+  const aprobar = () =>{
+    setDloader(true)
+
+    fetch(
+      "https://prod2-08.brazilsouth.logic.azure.com:443/workflows/2b574b1aaa414db19f733f218d1a9560/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eDolAiazNNPeOvUFFbPmPTCE2LWX8W0MDCtAv3SaSbk",
+      {
+        method:"POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          method: "post",
+          controller: "Approve",
+          data: `{aid: '${aid}', observaciones: '${observaciones}', cliente: 1}`
+        })
+      }
+    ).then(response=>{
+      setDloader(false)
+      if(response.status == 200){
+        alert("Aprobacion Realizada")
+      }else{
+        alert("error al enviar")
+      }
+    })
+  }
 
   return (
     <div className="approval-container">
@@ -150,7 +186,7 @@ function Actividad() {
             <div className="row">
             <div className="column">
             {
-                  Actividad.map(item=>
+                  actividad.map(item=>
                     <div>
                       <div className='inputLabel'>{item.title}</div>
                       <div className='inputValue'>{item.value}</div>
