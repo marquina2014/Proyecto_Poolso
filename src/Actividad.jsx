@@ -6,6 +6,7 @@ import './index.css';
 import logo from './assets/Poolsorojo.png';
 import Loader from './Components/Loader/Loader';
 import { useNavigate } from 'react-router-dom';
+import { urlcon } from './Services';
 
 function Actividad() {
   const [modalShow, setModalShow] = useState(false);
@@ -79,7 +80,7 @@ function Actividad() {
       navigate('SinAcceso');
     }
 
-    fetch("https://prod2-08.brazilsouth.logic.azure.com:443/workflows/2b574b1aaa414db19f733f218d1a9560/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eDolAiazNNPeOvUFFbPmPTCE2LWX8W0MDCtAv3SaSbk", {
+    fetch(urlcon, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -120,7 +121,7 @@ function Actividad() {
   const rechazar = () => {
     setDloader(true);
 
-    fetch("https://prod2-08.brazilsouth.logic.azure.com:443/workflows/2b574b1aaa414db19f733f218d1a9560/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eDolAiazNNPeOvUFFbPmPTCE2LWX8W0MDCtAv3SaSbk", {
+    fetch(urlcon, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -144,7 +145,7 @@ function Actividad() {
   const aprobar = () => {
     setDloader(true);
 
-    fetch("https://prod2-08.brazilsouth.logic.azure.com:443/workflows/2b574b1aaa414db19f733f218d1a9560/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eDolAiazNNPeOvUFFbPmPTCE2LWX8W0MDCtAv3SaSbk", {
+    fetch(urlcon, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
