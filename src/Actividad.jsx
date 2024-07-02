@@ -123,7 +123,8 @@ function Actividad() {
     ).then(response=>{
       setDloader(false)
       if(response.status == 200){
-        alert("Aprobacion Realizada")
+        navigate('/Completado')
+        alert("Su Rechazo se ha Enviado!")
       }else{
         alert("error al enviar")
       }
@@ -149,7 +150,8 @@ function Actividad() {
     ).then(response=>{
       setDloader(false)
       if(response.status == 200){
-        alert("Aprobacion Realizada")
+        navigate('/Completado')
+        alert("Su Aprobación se ha enviado!")
       }else{
         alert("error al enviar")
       }

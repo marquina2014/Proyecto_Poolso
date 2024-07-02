@@ -1,5 +1,6 @@
 :root{
   --main-color: #d8120c;
+  --blue-color: #0331c9;
 }
 .logo{
   width: 120px;
@@ -176,6 +177,17 @@ textarea.form-control {
   color:white !important;
 }
 
-
+.bounce {
+  animation: bounce 3s ease infinite;
+}
+@keyframes bounce {
+    70% { transform:translateY(0%); }
+    80% { transform:translateY(-15%); }
+    90% { transform:translateY(0%); }
+    95% { transform:translateY(-7%); }
+    97% { transform:translateY(0%); }
+    99% { transform:translateY(-3%); }
+    100% { transform:translateY(0); }
+}
 
 

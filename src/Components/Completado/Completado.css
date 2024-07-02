@@ -17,10 +17,10 @@
     
 }
 
-.imageTextContainer{
+.imageTextContainerCompletado{
     font-weight: bold;
     font-size: 21px;
-    color: var(--main-color);
+    color: var(--blue-color);
     display: flex;
     justify-content: center;
     

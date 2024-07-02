@@ -5,7 +5,7 @@ const SinAcceso = props =>{
 
     return(
         <div className="imageContainer">
-            <img className='image' src={image} alt="" />
+            <img className='image bounce' src={image} alt="" />
             <div className='imageTextContainer'>
                 <span>El recurso no se encuentra disponible</span>
             </div>
