@@ -3,28 +3,29 @@ import { Modal } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import './index.css';
 
-
-import logo from './assets/Poolsorojo.png'
+import logo from './assets/Poolsorojo.png';
 import Loader from './Components/Loader/Loader';
 import { useNavigate } from 'react-router-dom';
 
-
 function Actividad() {
   const [modalShow, setModalShow] = useState(false);
+  const [modalShow2, setModalShow2] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
+  const [modalTitle2, setModalTitle2] = useState('');
   const [observaciones, setObservaciones] = useState('');
   const [error, setError] = useState('');
-  const [ticket, setTicket] = useState([])
-  const [actividad, setActividad] = useState([])
-  const [aid, setAid] = useState(null)
+  const [ticket, setTicket] = useState([]);
+  const [actividad, setActividad] = useState([]);
+  const [aid, setAid] = useState(null);
+  const [dloader, setDloader] = useState(true);
 
   const navigate = useNavigate();
 
-  const [dloader, setDloader] = useState(true)
-
   const handleClose = () => {
     setModalShow(false);
+    setModalShow2(false);
     setModalTitle('');
+    setModalTitle2('');
     setObservaciones('');
     setError('');
   };
@@ -34,11 +35,22 @@ function Actividad() {
     setModalShow(true);
   };
 
+  const handleShow2 = (title) => {
+    setModalTitle2(title);
+    setModalShow2(true);
+  };
+
   const handleApprove = () => {
     console.log('Aprobado con observaciones:', observaciones);
     setObservaciones('');
     handleClose();
-    aprobar()
+    handleShow2('Aprobar esta actividad');
+  };
+  const handleConfirmApprove = () => {
+    console.log('Confirmando Aprobacion con observaciones:', observaciones);
+    setObservaciones('');
+    handleClose();
+    aprobar();
   };
 
   const handleReject = () => {
@@ -47,116 +59,111 @@ function Actividad() {
       return;
     }
     console.log('Rechazado con observaciones:', observaciones);
-    setObservaciones('');
     handleClose();
-    rechazar()
+    handleShow2('Rechazar esta actividad');
   };
 
-  useEffect(()=>{
-    const params = new URLSearchParams(document.location.search)
-    const getAID = params.get('aid')
-    setAid(getAID)
+  const handleConfirmReject = () => {
+    console.log('Confirmando rechazo con observaciones:', observaciones);
+    setObservaciones('');
+    handleClose();
+    rechazar();
+  };
 
-    if(!getAID){
-      navigate('SinAcceso')
+  useEffect(() => {
+    const params = new URLSearchParams(document.location.search);
+    const getAID = params.get('aid');
+    setAid(getAID);
+
+    if (!getAID) {
+      navigate('SinAcceso');
     }
 
-    fetch(
-      "https://prod2-08.brazilsouth.logic.azure.com:443/workflows/2b574b1aaa414db19f733f218d1a9560/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eDolAiazNNPeOvUFFbPmPTCE2LWX8W0MDCtAv3SaSbk",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          method: "post",
-          controller: "Validate",
-          data: `{aid: '${getAID}'}`
-        })
-      }
-    ).then(response=>{
-      if(response.status == 200){
-        response.json().then(data=>{
-
-          const valuesTicket = []
-          const valuesActividad = []
-          Object.keys(data.Ticket).forEach(item=>{
+    fetch("https://prod2-08.brazilsouth.logic.azure.com:443/workflows/2b574b1aaa414db19f733f218d1a9560/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eDolAiazNNPeOvUFFbPmPTCE2LWX8W0MDCtAv3SaSbk", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        method: "post",
+        controller: "Validate",
+        data: `{aid: '${getAID}'}`
+      })
+    }).then(response => {
+      if (response.status === 200) {
+        response.json().then(data => {
+          const valuesTicket = [];
+          const valuesActividad = [];
+          Object.keys(data.Ticket).forEach(item => {
             valuesTicket.push({
               title: item.split("_").join(" "),
               value: data.Ticket[item]
-            })
-          })
-          Object.keys(data.Actividad).forEach(item=>{
+            });
+          });
+          Object.keys(data.Actividad).forEach(item => {
             valuesActividad.push({
               title: item.split("_").join(" "),
               value: data.Actividad[item]
-            })
-          })
-  
-          setTicket(valuesTicket)
-          setActividad(valuesActividad)
-  
-          setDloader(false)
-        })
-      }else{
-        navigate('/SinAcceso')
-      }
-    })
-  },[])
+            });
+          });
 
-  const rechazar = () =>{
-    setDloader(true)
+          setTicket(valuesTicket);
+          setActividad(valuesActividad);
+          setDloader(false);
+        });
+      } else {
+        navigate('/SinAcceso');
+      }
+    });
+  }, [navigate]);
 
-    fetch(
-      "https://prod2-08.brazilsouth.logic.azure.com:443/workflows/2b574b1aaa414db19f733f218d1a9560/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eDolAiazNNPeOvUFFbPmPTCE2LWX8W0MDCtAv3SaSbk",
-      {
-        method:"POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          method: "post",
-          controller: "Reject",
-          data: `{aid: '${aid}', observaciones: '${observaciones}', cliente: 1}`
-        })
-      }
-    ).then(response=>{
-      setDloader(false)
-      if(response.status == 200){
-        navigate('/Completado')
-        alert("Su Rechazo se ha Enviado!")
-      }else{
-        alert("error al enviar")
-      }
-    })
-  }
+  const rechazar = () => {
+    setDloader(true);
 
-  const aprobar = () =>{
-    setDloader(true)
+    fetch("https://prod2-08.brazilsouth.logic.azure.com:443/workflows/2b574b1aaa414db19f733f218d1a9560/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eDolAiazNNPeOvUFFbPmPTCE2LWX8W0MDCtAv3SaSbk", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        method: "post",
+        controller: "Reject",
+        data: `{aid: '${aid}', observaciones: '${observaciones}', cliente: 1}`
+      })
+    }).then(response => {
+      setDloader(false);
+      if (response.status === 200) {
+        navigate('/Completado');
+        alert("Su Rechazo se ha Enviado!");
+      } else {
+        alert("Error al enviar");
+      }
+    });
+  };
 
-    fetch(
-      "https://prod2-08.brazilsouth.logic.azure.com:443/workflows/2b574b1aaa414db19f733f218d1a9560/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eDolAiazNNPeOvUFFbPmPTCE2LWX8W0MDCtAv3SaSbk",
-      {
-        method:"POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          method: "post",
-          controller: "Approve",
-          data: `{aid: '${aid}', observaciones: '${observaciones}', cliente: 1}`
-        })
+  const aprobar = () => {
+    setDloader(true);
+
+    fetch("https://prod2-08.brazilsouth.logic.azure.com:443/workflows/2b574b1aaa414db19f733f218d1a9560/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eDolAiazNNPeOvUFFbPmPTCE2LWX8W0MDCtAv3SaSbk", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        method: "post",
+        controller: "Approve",
+        data: `{aid: '${aid}', observaciones: '${observaciones}', cliente: 1}`
+      })
+    }).then(response => {
+      setDloader(false);
+      if (response.status === 200) {
+        navigate('/Completado');
+        alert("Su Aprobación se ha enviado!");
+      } else {
+        alert("Error al enviar");
       }
-    ).then(response=>{
-      setDloader(false)
-      if(response.status == 200){
-        navigate('/Completado')
-        alert("Su Aprobación se ha enviado!")
-      }else{
-        alert("error al enviar")
-      }
-    })
-  }
+    });
+  };
 
   return (
     <div className="approval-container">
@@ -171,8 +178,8 @@ function Actividad() {
             <div className="row">
               <div className="column">
                 {
-                  ticket.map(item=>
-                    <div>
+                  ticket.map(item =>
+                    <div key={item.title}>
                       <div className='inputLabel'>{item.title}</div>
                       <div className='inputValue'>{item.value}</div>
                     </div>
@@ -186,10 +193,10 @@ function Actividad() {
           <h3 className="TicAT-Titulo">Actividad Realizada</h3>
           <div className="section-content">
             <div className="row">
-            <div className="column">
-            {
-                  actividad.map(item=>
-                    <div>
+              <div className="column">
+                {
+                  actividad.map(item =>
+                    <div key={item.title}>
                       <div className='inputLabel'>{item.title}</div>
                       <div className='inputValue'>{item.value}</div>
                     </div>
@@ -199,17 +206,21 @@ function Actividad() {
             </div>
           </div>
         </div>
-        
       </div>
       <div className="buttons">
-        <button className="btnAproval btn btn-danger btn-lg mr-2" onClick={() => handleShow('Rechazar Actividad')}>
+        <button
+          className="btnAproval btn btn-danger btn-lg mr-2"
+          onClick={() => handleShow('Rechazar Actividad')}
+        >
           Rechazar
         </button>
-        <button className="btnAproval btn btn-success btn-lg" onClick={() => handleShow('Aprobar Actividad')}>
+        <button
+          className="btnAproval btn btn-success btn-lg"
+          onClick={() => handleShow('Aprobar Actividad')}
+        >
           Aprobar
         </button>
       </div>
-      
 
       <Modal show={modalShow} onHide={handleClose} centered>
         <motion.div initial={{ rotateY: 90 }} animate={{ rotateY: 0 }} transition={{ duration: 0.5 }}>
@@ -230,33 +241,52 @@ function Actividad() {
           </Modal.Body>
           <Modal.Footer>
             {modalTitle === 'Rechazar Actividad' && (
-              <button onClick={handleReject} className=" btn btn-danger btn-lg mr-2" >
+              <button className="btn btn-danger btn-lg mr-2" onClick={handleReject}>
                 Rechazar
-              </button>
-              
+                </button>
             )}
-             {modalTitle === 'Aprobar Actividad' && (
-              <button onClick={handleApprove} className=" btn btn-success btn-lg">
+            {modalTitle === 'Aprobar Actividad' && (
+              <button className="btn btn-success btn-lg" onClick={handleApprove}>
                 Aprobar
               </button>
             )}
             <button onClick={handleClose} className="btn btn-cerrar btn-lg">
               Cerrar
             </button>
-            
           </Modal.Footer>
         </motion.div>
       </Modal>
-      
-      {/* Loader */}
-      {
-        dloader?
-        <Loader />:
-        <></>
-      }
+
+      <Modal show={modalShow2} onHide={handleClose} centered>
+        <motion.div initial={{ rotateY: 90 }} animate={{ rotateY: 0 }} transition={{ duration: 0.5 }}>
+          <Modal.Header closeButton>
+            <Modal.Title>{modalTitle2}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>¿Está seguro de que desea {modalTitle2}?</p>
+          </Modal.Body>
+          <Modal.Footer>
+            
+          {modalTitle2 === 'Rechazar esta actividad' && (
+              <button className="btn btn-danger btn-lg mr-2" onClick={handleConfirmReject}>
+                Rechazar
+                </button>
+            )}
+            {modalTitle2 === 'Aprobar esta actividad' && (
+              <button className="btn btn-success btn-lg" onClick={handleConfirmApprove}>
+                Aprobar
+              </button>
+            )}
+            <button className="btn btn-secondary btn-lg mr-2" onClick={handleClose}>
+              Cancelar
+            </button>
+          </Modal.Footer>
+        </motion.div>
+      </Modal>
+
+      {dloader && <Loader />}
     </div>
   );
 }
-
 
 export default Actividad;
