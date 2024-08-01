@@ -1,0 +1,193 @@
+:root{
+  --main-color: #d8120c;
+  --blue-color: #0331c9;
+}
+.logo{
+  width: 120px;
+  
+  border-radius: 5px;
+}
+.approval-container {
+  padding: 20px;
+  width: 100%;
+  height: 100vh;
+  background-image: url("background.jpg");
+  background-size: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.header {
+  color: var(--main-color);
+  /* border: 1px solid red; */
+  overflow: hidden;
+  border: .5px solid #ccc;
+  box-shadow: 5px 5px var(--main-color);
+  border-radius: 30px;
+  background-color: white;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.Titulo {
+  font-size: 30px;
+  margin-top: 0;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.approval-box {
+  padding: 20px;
+  flex-grow: 1;
+  overflow-y: auto; /* Permite el desplazamiento si el contenido es demasiado alto */
+  display: flex;
+  flex-direction: row; /* Coloca las secciones una al lado de la otra */
+  justify-content: space-between;
+  gap: 20px; /* Espacio entre las secciones */
+}
+
+.section {
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+.section h3 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Ajuste para mantener separación en pantallas pequeñas */
+  flex-grow: 10;
+}
+
+.btn {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  width: 200px;
+  transition: all 0.3s ease;
+}
+
+.btnAproval{
+  width: 200px;
+  height: 50px;
+}
+
+.btn-danger {
+  background-color: var(--main-color) !important;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #7a0000 !important;
+}
+
+.btn-success {
+  background-color: #00aa28 !important;
+  color: rgb(255, 255, 255) !important;
+}
+
+.btn-success:hover {
+  background-color: #006315 !important;
+  color: rgb(255, 255, 255) !important;
+}
+
+.btn-large {
+  height: 70px; /* Ajusta la altura según lo necesites */
+  width: 250px;  /* Ajusta el ancho según lo necesites */
+  font-size: 25px; /* Ajusta el tamaño de la fuente según lo necesites */
+}
+
+textarea.form-control {
+  width: 100%;
+  height: 100px;
+  resize: none;
+}
+
+/* Media Queries para pantallas más pequeñas */
+@media (max-width: 768px) {
+  .approval-container {
+    height: auto;
+    max-width: 100%;
+    padding: 10px; /* Agrega padding para evitar que el contenido se pegue a los bordes */
+  }
+
+  .approval-box {
+    flex-direction: column; /* Cambia la dirección a columna en pantallas pequeñas */
+  }
+
+  .section-content > div {
+    flex: 1 1 100%; /* Hace que los elementos ocupen toda la anchura en pantallas pequeñas */
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 10px; /* Ajusta el espacio entre botones en pantallas pequeñas */
+  }
+
+  .btn-large {
+    width: 100%; /* Hace que los botones ocupen toda la anchura disponible en pantallas pequeñas */
+    font-size: 20px; /* Ajusta el tamaño de la fuente en pantallas pequeñas */
+  }
+
+  .Titulo {
+    font-size: 25px !important; /* Ajusta el tamaño de la fuente del título en pantallas pequeñas */
+  }
+}
+
+.column{
+  font-size: 18px;
+}
+
+.inputLabel{
+  font-weight: bold;
+}
+.inputValue{
+  padding: 3px;
+  background: #eaeaea;
+}
+
+.btnModalContainer{
+  display: flex;
+  justify-content: center;
+}
+
+
+.btn-cerrar {
+  background-color: #666666 !important;
+  color: white !important;
+}
+
+
+.btn-cerrar:hover {
+  background-color: #272727 !important;
+  color:white !important;
+}
+
+.bounce {
+  animation: bounce 3s ease infinite;
+}
+@keyframes bounce {
+    70% { transform:translateY(0%); }
+    80% { transform:translateY(-15%); }
+    90% { transform:translateY(0%); }
+    95% { transform:translateY(-7%); }
+    97% { transform:translateY(0%); }
+    99% { transform:translateY(-3%); }
+    100% { transform:translateY(0); }
+}
+
+
