@@ -1,1 +1,1 @@
-export const urlcon = "https://prod2-08.brazilsouth.logic.azure.com:443/workflows/2b574b1aaa414db19f733f218d1a9560/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eDolAiazNNPeOvUFFbPmPTCE2LWX8W0MDCtAv3SaSbk"
+export const urlcon = "https://prod-17.brazilsouth.logic.azure.com:443/workflows/fad9d26383194aed9bc9a78cff617749/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=sOBeHcHJ0DRveVASxW-7pl1At-IGAmpf3cXrz39nWlg"
